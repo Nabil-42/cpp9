@@ -12,15 +12,17 @@ void find(std::map<std::string, float> &cont, float &value, std::string &date)
 		std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 	else {
 		it = cont.lower_bound(date);
-		if (it != cont.begin())
+		if (it == cont.end())
 		{
-			it--;
-			std::cout << date << " => " << value << " = " << value * it->second << std::endl;
+			return;
 		}
-		else ( std::cerr << "Error: no data available for this date or earlier." << std::endl, 1);
+		else
+		{
+			if (it != cont.begin())
+				--it;
+			std::cout << date << " => " << value << " = " << it->second << " oook = "<< value * it->second << std::endl;
+		}	
 	}
-
-
 }
 
 void recherche(std::map<std::string, float> &cont, std::ifstream &txt)
@@ -63,16 +65,15 @@ int main (int argc, char** argv)
 		std::string line;
 		
 	int i = 0;
-		while (std::getline(file, line) && i < 10)
+		while (std::getline(file, line))
 		{
 			std::string date;
 			float value = 1;
 			++i;
 			std::stringstream ss(line);
 			std::getline(ss, date, ',');
-			std::cout << "value = " << value << "date = " << date << std::endl;
+			// std::cout << "value = " << value << "date = " << date << std::endl;
 			ss >> value;
-			// break;
 			if (ss.fail())
 			{
 				std::cerr << " Error: Wrong format 1" << std::endl;
@@ -89,11 +90,12 @@ int main (int argc, char** argv)
 			&& std::isdigit(date[8])
 			&& std::isdigit(date[9]))))
 			{
+				std::cout << "TEST VALU = " << value << std::endl;
 				cont[date] = value;
 			}
 			else (std::cerr << " Error: Wrong format 2" << std::endl);
 		}
 		
-		// recherche(cont, txt);
+		recherche(cont, txt);
 		
 	}
