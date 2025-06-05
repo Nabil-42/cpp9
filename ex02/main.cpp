@@ -36,22 +36,33 @@ void fusion(std::vector<int> &vec, std::vector<int> &small_storage, std::vector<
 {
 	std::sort(small_storage.begin(), small_storage.end());
 	std::sort(big_storage.begin(), big_storage.end());
-	std::vector<int>::iterator it = vec.begin();
+	std::vector<int>::iterator it = small_storage.begin();
 
-	int i = 0;
-	while (it != vec.end())
+	int i = 0;	
+	while (it != small_storage.end())
 	{
-		 vec[i] =
+		std::cout << "test s : " << *it << std::endl;
+		vec[i] = *it;
+		 ++it;
+		 ++i;
 	}
+	it = big_storage.begin();
+	while (it != big_storage.end())
+	{
+		std::cout << "test s : " << *it << std::endl;
+		 vec[i] = *it;
+		 ++it;
+		 ++i;
+	}
+
 	
+
 }
 
 void vec_algo(std::vector<int> &vec)
 {
 	std::vector<int>::iterator it = vec.begin();
 	std::vector<int> big_storage, small_storage;
-
-	std::cout << "TESST" << std::endl;
 	
 	while (it != vec.end() && (it + 1) != vec.end())
 	{
@@ -72,6 +83,30 @@ void vec_algo(std::vector<int> &vec)
 		small_storage.push_back(*it);
 	
 	fusion(vec, small_storage, big_storage);
+}
+
+int check_doublon(std::vector<int> &vec)
+{
+	std::vector<int>::iterator it = vec.begin();
+
+	int i = 0;
+	while (it != vec.end())
+	{
+		int value = *it;
+		while (it + i != vec.end())
+		{
+			if (value == *(it + i + 1))
+			{
+				std::cerr << "Error: Doublon !" << std::endl;
+				return -1;
+			}
+			++i;
+		}
+		i = 0;
+		++it;
+	}
+	return 0;
+	
 }
 
 int main(int argc, char** argv) {
@@ -99,17 +134,20 @@ int main(int argc, char** argv) {
         vec.push_back(value); 
 	dec.push_back(value); 
     }
-
+    	if (check_doublon(vec) == -1)
+    		return 1;
     
-    std::cout << "Contenu du vector:" << std::endl;
-    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) 
-    {
-	    std::cout << *it << " " << std::endl;
-	}
-	
+    	std::cout << "Befor: ";
+		for (int i = 0; i <= 6 && i < static_cast<int>(vec.size()); ++i)
+			std::cout << vec[i] << " ";
+	std::cout << std::endl;
+
 	vec_algo(vec);
 
-
+	std::cout << "After: ";
+		for (int i = 0; i <= 6 && i < static_cast<int>(vec.size()); ++i)
+			std::cout << vec[i] << " ";
+		std::cout << std::endl;
 
     return 0;
 }
